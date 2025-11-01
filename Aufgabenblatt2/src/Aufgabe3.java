@@ -5,16 +5,43 @@ public class Aufgabe3 {
 
     private static boolean isHappyNumber(int number) {
         //TODO: Implementieren Sie hier Ihre Lösung für die Angabe
-        return false; //Zeile kann geändert oder entfernt werden.
+        int currNr = number;
+        int ziffer = 0;
+        while (currNr != 1 && currNr != 4) { //nur dann unterbrochen da 1 -> Happy, 4 -> Sad
+
+            int summe = 0;
+            while (currNr > 0) {
+                ziffer = currNr % 10;
+                summe += ziffer * ziffer;
+                currNr = currNr / 10;
+            }
+            currNr = summe;
+        }
+        return currNr == 1;
+
     }
 
     private static int countHappyNumbers(int start, int end) {
         //TODO: Implementieren Sie hier Ihre Lösung für die Angabe
-        return -1; //Zeile kann geändert oder entfernt werden.
+        int count = 0;
+        for(int i = start; i <= end; i++){
+            if (isHappyNumber(i)){
+                count++;
+            }
+        }
+        return count;
     }
 
     private static void printHappyNumbers(int start, int end) {
         //TODO: Implementieren Sie hier Ihre Lösung für die Angabe
+        for (int i = start; i <= end; i++){
+            if (isHappyNumber(i)){
+                System.out.print(i);
+                if(i < end){
+                    System.out.print(" ");
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -34,11 +61,17 @@ public class Aufgabe3 {
         assert (!isHappyNumber(5));
         assert (!isHappyNumber(4));
         System.out.println();
+
         assert(countHappyNumbers(1, 100) == 20);
         assert(countHappyNumbers(50, 250) == 28);
         assert(countHappyNumbers(250, 10000) == 1403);
+
         //**********************************************************************
 
         //TODO: Testen Sie hier alle Methoden mit verschiedenen Inputs!
+        printHappyNumbers(1,100);
+        //printHappyNumbers(50,250);
+        //printHappyNumbers(250,10000);
     }
+
 }
