@@ -11,7 +11,7 @@ public class Aufgabe3 {
 
             int summe = 0;
             while (currNr > 0) {
-                ziffer = currNr % 10;
+                ziffer = currNr % 10; //um die letzte ziffer einer zahl zu bekommen
                 summe += ziffer * ziffer;
                 currNr = currNr / 10;
             }

@@ -8,19 +8,60 @@ public class Aufgabe4 {
 
     private static boolean isValidPassword(String password) {
         //TODO: Implementieren Sie hier Ihre Lösung für die Angabe
-        return false; //Zeile kann geändert oder entfernt werden.
+        String requirement = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{12,}$"; //?= Lookaheads(mindestens)
+        return password.matches(requirement);
     }
 
     private static double calculateEntropy(String password) {
         //TODO: Implementieren Sie hier Ihre Lösung für die Angabe
-        return -1.0; //Zeile kann geändert oder entfernt werden.
+        int L = password.length();
+        int n = 0;
+        double entropie;
+        if(password.isEmpty()){
+            return Double.NaN;
+        }
+        if(password.matches("^[0-9]+$")){
+            n = 10;
+        } else if (password.matches("^(?:[A-Z]+|[a-z]+)$")) {
+            n = 26;
+        }else if (password.matches("^(?:[a-z0-9]+|[A-Z0-9]+)$")){
+            n = 36;
+        }else if (password.matches("^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]+$")){
+            n = 52;
+        }else if(password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$")){
+            n = 62;
+        }
+        entropie = L*(Math.log10(n)/Math.log10(2));
+        return entropie;
+
     }
 
     public static void main(String[] args) {
         //TODO: Implementieren Sie hier Ihren "Passwordfinder"
+        Scanner reader = new Scanner(System.in);
+        String password = "";
+        String strength = "";
+        do{
+            System.out.print("Geben Sie hier Ihr Passwort ein [kein Sonderzeichen und Länge > 11]: ");
+            password = reader.next();
+
+
+        }while (!isValidPassword(password));
+        double strengthNr = calculateEntropy(password);
+        if(strengthNr < 60){
+            strength = "weak";
+        }else if(60 <= strengthNr && strengthNr < 120){
+            strength = "strong";
+        }else{
+            strength = "very strong";
+        }
+        System.out.println("Your password is: " + password);
+        System.out.println("Entropy of the password: " + strengthNr + " -> The password is: " + strength);
+
+
 
         //MIT DEN NACHFOLGENDEN ZEILEN KÖNNEN SIE DIE BEIDEN METHODEN SEPARAT TESTEN!
-        /*
+
         assert (isValidPassword("") == false);
         assert (isValidPassword("BuchstabenAberKeineZiffer") == false);
         assert (isValidPassword("123456789123456789") == false);
@@ -37,6 +78,6 @@ public class Aufgabe4 {
         assert (calculateEntropy("Passwort1234") == 71.45035572464249);
         assert (calculateEntropy("passwort1234") == 62.039100017307746);
         assert (calculateEntropy("PasswortKannAuchSehrLangSein123") == 184.58008562199313);
-        */
+
     }
 }
