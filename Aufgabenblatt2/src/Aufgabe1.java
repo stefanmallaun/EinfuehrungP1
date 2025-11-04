@@ -34,11 +34,10 @@ public class Aufgabe1 {
                 }
 
             }
-            if(i > 0)  { //Keine weitere überprüfung, da wir immer von der Unterkante (y = boxSize) ausgehen
                 myDrawObj.setColor(Color.gray);
                 myDrawObj.setLineWidth(2);
                 myDrawObj.drawLine(0, boxSize * i, boxWidth, boxSize * i);
-            }
+
         }
         myDrawObj.show();
     }

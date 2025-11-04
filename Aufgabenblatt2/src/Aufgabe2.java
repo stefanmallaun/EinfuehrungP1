@@ -39,6 +39,7 @@ public class Aufgabe2 {
         }
     }
     private static void printNumbersInInterval(int start, int end){
+        //alle Zahlen im Intervall ausgeben und Leerzeichen
         for (int i = start; i <= end; i++){
             System.out.print(i);
             if(i < end){
@@ -47,6 +48,7 @@ public class Aufgabe2 {
         }
     }
     private static int countDigitsInString(String text){
+        //Zähle alle Ziffern im text
         int count = 0;
         for (int i = 0; i < text.length(); i++){
             char a = text.charAt(i);
@@ -58,6 +60,7 @@ public class Aufgabe2 {
         return count;
     }
     private static boolean isCharOnceInString(String text, char character){
+        //ist char GENAU einmal in text vorhanden
         int count = 0;
         for (int i = 0; i < text.length(); i++){
             if(text.charAt(i) == character){
@@ -66,7 +69,9 @@ public class Aufgabe2 {
         }
         return count == 1;
     }
+
     private static String removeLettersInString(String text){
+        //alle Buchstaben entfernen (klein und groß)
         String returnString = "";
         for (int i = 0; i < text.length(); i++){
             if(!Character.isAlphabetic(text.charAt(i))){

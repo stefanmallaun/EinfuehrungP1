@@ -20,15 +20,20 @@ public class Aufgabe4 {
         if(password.isEmpty()){
             return Double.NaN;
         }
+        //Nur Ziffern
         if(password.matches("^[0-9]+$")){
             n = 10;
-        } else if (password.matches("^(?:[A-Z]+|[a-z]+)$")) {
+        }//Nur Groß- oder nur Kleinbuchstaben
+        else if (password.matches("^(?:[A-Z]+|[a-z]+)$")) {
             n = 26;
-        }else if (password.matches("^(?:[a-z0-9]+|[A-Z0-9]+)$")){
+        }//Ziffern und nur ein Typ von Buchstaben
+        else if (password.matches("^(?:[a-z0-9]+|[A-Z0-9]+)$")){
             n = 36;
-        }else if (password.matches("^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]+$")){
+        }//Keine Ziffern, aber Groß- und Kleinbuchstaben
+        else if (password.matches("^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]+$")){
             n = 52;
-        }else if(password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$")){
+        }//Ziffern, Groß- und Kleinbuchstaben
+        else if(password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$")){
             n = 62;
         }
         entropie = L*(Math.log10(n)/Math.log10(2));
