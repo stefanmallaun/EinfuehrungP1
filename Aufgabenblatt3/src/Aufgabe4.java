@@ -4,8 +4,25 @@
 public class Aufgabe4 {
 
     private static String appendAllSignsLeft(String text, char character) {
-        return "";
+
+        if (text.isEmpty()) {
+            return "";
+        }
+
+        String text2 = appendAllSignsLeft(text.substring(1), character);
+
+        int stringLength = text.length()-1;
+
+        String rightSiteOfString = text2.substring(text2.length() - stringLength);
+
+        String leftSiteOfString = text2.substring(0, text2.length() - stringLength);
+
+        if(text.charAt(0) == character){
+            leftSiteOfString += text.charAt(0);
+        }
+        return leftSiteOfString + text.charAt(0) + rightSiteOfString;
     }
+
 
     public static void main(String[] args) {
 

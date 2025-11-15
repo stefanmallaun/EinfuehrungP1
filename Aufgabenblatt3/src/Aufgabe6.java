@@ -75,14 +75,74 @@ public class Aufgabe6 {
 
     // Iterative Version -> handgeschrieben
     private static void drawIterativeSquares(CodeDraw myDrawObj, int width) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
+
+        int sSize = 4;
+        for (int y = 4; y < width; y += sSize * 2) {
+            for (int x = 4; x < width; x += sSize * 2) {
+                myDrawObj.setColor(Color.BLACK);
+                myDrawObj.drawSquare(x, y, sSize);
+                myDrawObj.setColor(Color.YELLOW);
+                myDrawObj.fillSquare(x, y, sSize);
+            }
+        }
+        for (int y = 4*2 - 2; y < width; y += (sSize * 2)*2) {
+            for (int x = 4*2 - 2; x < width; x += (sSize * 2)*2) {
+                myDrawObj.setColor(Color.BLACK);
+                myDrawObj.drawSquare(x, y, sSize*2);
+                myDrawObj.setColor(Color.YELLOW);
+                myDrawObj.fillSquare(x, y, sSize*2);
+            }
+        }
+        for (int y = 4*4 - 6; y < width; y += ((sSize * 2)*2)*2) {
+            for (int x = 4*4 - 6; x < width; x += ((sSize * 2)*2)*2) {
+                myDrawObj.setColor(Color.BLACK);
+                myDrawObj.drawSquare(x, y, sSize*4);
+                myDrawObj.setColor(Color.YELLOW);
+                myDrawObj.fillSquare(x, y, sSize*4);
+            }
+        }
+        for (int y = 4*8 - 14; y < width; y += (((sSize * 2)*2)*2)*2) {
+            for (int x = 4*8 - 14; x < width; x += (((sSize * 2)*2)*2)*2) {
+                myDrawObj.setColor(Color.BLACK);
+                myDrawObj.drawSquare(x, y, sSize*8);
+                myDrawObj.setColor(Color.YELLOW);
+                myDrawObj.fillSquare(x, y, sSize*8);
+            }
+        }
+
+        for (int y = 4*16 - 30 ; y < width; y += ((((sSize * 2)*2)*2)*2)*2) {
+            for (int x = 4*16 -30 ; x < width; x += ((((sSize * 2)*2)*2)*2)*2) {
+                myDrawObj.setColor(Color.BLACK);
+                myDrawObj.drawSquare(x, y, sSize*16);
+                myDrawObj.setColor(Color.YELLOW);
+                myDrawObj.fillSquare(x, y, sSize*16);
+            }
+        }
+        for (int y = 4*32 -62; y < width; y += (((((sSize * 2)*2)*2)*2)*2)*2) {
+            for (int x = 4*32 -62 ; x < width; x += (((((sSize * 2)*2)*2)*2)*2)*2) {
+                myDrawObj.setColor(Color.BLACK);
+                myDrawObj.drawSquare(x, y, sSize*32);
+                myDrawObj.setColor(Color.YELLOW);
+                myDrawObj.fillSquare(x, y, sSize*32);
+            }
+        }
+        myDrawObj.setColor(Color.BLACK);
+        myDrawObj.drawSquare(width/2 - width/4, width/2 - width/4, width/2);
+
+        myDrawObj.setColor(Color.YELLOW);
+        myDrawObj.fillSquare(width/2 - width/4, width/2 - width/4, width/2);
+
+
+
+        myDrawObj.show();
+
     }
 
     public static void main(String[] args) {
 
         int pixelWidth = 512;
         int pixelHeight = 512;
-
+        /*
         CodeDraw myDrawObjIterGLM45v = new CodeDraw(pixelWidth, pixelHeight);
         myDrawObjIterGLM45v.setTitle("Output Iterative Method -> GLM 4.5v");
         myDrawObjIterGLM45v.setCanvasPositionX(50);
@@ -92,20 +152,20 @@ public class Aufgabe6 {
         myDrawObjIterChatGPT5.setTitle("Output Iterative Method -> ChatGPT 5");
         myDrawObjIterChatGPT5.setCanvasPositionX(600);
         myDrawObjIterChatGPT5.setCanvasPositionY(50);
-
+        */
         CodeDraw myDrawObjIter = new CodeDraw(pixelWidth, pixelHeight);
         myDrawObjIter.setTitle("Output Iterative Method");
         myDrawObjIter.setCanvasPositionX(1150);
         myDrawObjIter.setCanvasPositionY(50);
-
+        /*
         drawIterativeSquaresGLM45v(myDrawObjIterGLM45v, pixelWidth);
         myDrawObjIterGLM45v.show();
 
         drawIterativeSquaresChatGPT5(myDrawObjIterChatGPT5, pixelWidth);
         myDrawObjIterChatGPT5.show();
-
+        */
         drawIterativeSquares(myDrawObjIter, pixelWidth);
-        myDrawObjIter.show();
+        //myDrawObjIter.show(50);
     }
 }
 

@@ -27,8 +27,8 @@ public class Aufgabe2 {
         //**********************************************************************
 
         //TODO: Testen Sie hier zusätzlich alle Methoden mit verschiedenen Inputs!
-        //printNumChars('d', 4);
-        //printNumbersInInterval(-2,100);
+        printNumChars('d', 4);
+        printNumbersInInterval(-2,100);
 
     }
     private static void printNumChars(char startChar, int numChars){
