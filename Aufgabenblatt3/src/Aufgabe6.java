@@ -17,7 +17,7 @@ public class Aufgabe6 {
             k_max++;
             size /= 2;
         }
-
+        //Es wird direkt das ganz große quadrat gemalt, dann die kleineren
         for (int k = 0; k <= k_max; k++) {
             int current_size = width / (1 << k);
             int num_squares = 1 << (2 * k);
@@ -27,7 +27,7 @@ public class Aufgabe6 {
                 int y = width / 2;
                 int temp = i;
                 for (int j = 0; j < k; j++) {
-                    int dir = temp % 4;
+                    int dir = temp % 4; //es wird nur ein Raster produziert, welches sich verschiebt
                     temp /= 4;
 
                     int dx = (dir == 0 || dir == 1) ? 1 : -1;
@@ -43,20 +43,21 @@ public class Aufgabe6 {
                     myDrawObj.setColor(Color.BLACK);
                     myDrawObj.drawRectangle(x - current_size/2, y - current_size/2, current_size, current_size);
                 }
+
             }
         }
     }
 
     // Iterative Version => ChatGPT 5 generiert
     public static void drawIterativeSquaresChatGPT5(CodeDraw myDrawObj, int width) {
-        int s = width / 2;             // Startgröße
+        int s = width / 2;             // Startgröße !!!!! Es wird zuerst das größte und dann die kleineren gemalt, überschneidung
         int center = width / 2;        // Mittelpunkt des Fensters
 
         // Wir speichern keine Werte, sondern berechnen die Koordinaten schrittweise
         // Solange die Seitenlänge > 4 ist, zeichnen wir Quadrate auf allen Ebenen
         while (s > 4) {
             int step = s / 2;
-            int n = (width / s);  // Anzahl potenzieller Quadrate in dieser Ebene (nicht wirklich gebraucht)
+            int n = (width / s);  // Anzahl potenzieller Quadrate in dieser Ebene (nicht wirklich gebraucht) !!! Wird nie verwendet
 
             // Zeichne alle Quadrate dieser "Ebene"
             for (int dx = -step; dx <= step; dx += s) {
@@ -74,6 +75,7 @@ public class Aufgabe6 {
 
 
     // Iterative Version -> handgeschrieben
+    /* VERSION 1
     private static void drawIterativeSquares(CodeDraw myDrawObj, int width) {
 
         int sSize = 4;
@@ -138,11 +140,42 @@ public class Aufgabe6 {
 
     }
 
+     */
+    // VERSION 2
+    private static void drawIterativeSquares(CodeDraw myDrawObj, int width) {
+        int currentSize = 4;
+        int offset = 2;
+
+        while (currentSize <= width / 2) {
+
+            int step = currentSize * 2;
+
+            //Zeichnen Musters für eine Quadrat Größe
+            for (int y = offset; y < width; y += step) {
+                for (int x = offset; x < width; x += step) {
+                    myDrawObj.setColor(Color.YELLOW);
+                    myDrawObj.fillSquare(x, y, currentSize);
+                    myDrawObj.setColor(Color.BLACK);
+                    myDrawObj.drawSquare(x, y, currentSize);
+
+                }
+            }
+
+            offset += currentSize / 2 ;
+
+
+            currentSize *= 2;
+
+        }
+
+        myDrawObj.show();
+    }
+
     public static void main(String[] args) {
 
         int pixelWidth = 512;
         int pixelHeight = 512;
-        /*
+
         CodeDraw myDrawObjIterGLM45v = new CodeDraw(pixelWidth, pixelHeight);
         myDrawObjIterGLM45v.setTitle("Output Iterative Method -> GLM 4.5v");
         myDrawObjIterGLM45v.setCanvasPositionX(50);
@@ -152,18 +185,18 @@ public class Aufgabe6 {
         myDrawObjIterChatGPT5.setTitle("Output Iterative Method -> ChatGPT 5");
         myDrawObjIterChatGPT5.setCanvasPositionX(600);
         myDrawObjIterChatGPT5.setCanvasPositionY(50);
-        */
+
         CodeDraw myDrawObjIter = new CodeDraw(pixelWidth, pixelHeight);
         myDrawObjIter.setTitle("Output Iterative Method");
         myDrawObjIter.setCanvasPositionX(1150);
         myDrawObjIter.setCanvasPositionY(50);
-        /*
+
         drawIterativeSquaresGLM45v(myDrawObjIterGLM45v, pixelWidth);
         myDrawObjIterGLM45v.show();
 
         drawIterativeSquaresChatGPT5(myDrawObjIterChatGPT5, pixelWidth);
         myDrawObjIterChatGPT5.show();
-        */
+
         drawIterativeSquares(myDrawObjIter, pixelWidth);
         //myDrawObjIter.show(50);
     }

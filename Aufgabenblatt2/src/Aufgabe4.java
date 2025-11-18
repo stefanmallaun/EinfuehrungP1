@@ -24,7 +24,7 @@ public class Aufgabe4 {
         if(password.matches("^[0-9]+$")){
             n = 10;
         }//Nur Groß- oder nur Kleinbuchstaben
-        else if (password.matches("^(?:[A-Z]+|[a-z]+)$")) {
+        else if (password.matches("^(?:[A-Z]+|[a-z]+)$")) { // ?: (NUR das | das , "+" da man nicht nur ein Zeichen sondern nachfolgende
             n = 26;
         }//Ziffern und nur ein Typ von Buchstaben
         else if (password.matches("^(?:[a-z0-9]+|[A-Z0-9]+)$")){
