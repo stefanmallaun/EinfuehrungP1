@@ -84,6 +84,7 @@ public class Aufgabe5 {
         return deck;
     }
     private static String drawCard(ArrayList<String> deck){
+        //Ausgelagert da jede Methode nur eine Aufgabe haben sollte und hier eine einzelne Karte gezogen wird.
         Random rand = new Random();
         int index = rand.nextInt(deck.size());
         return deck.remove(index);
