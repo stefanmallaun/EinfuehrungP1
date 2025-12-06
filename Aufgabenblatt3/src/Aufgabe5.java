@@ -24,11 +24,12 @@ public class Aufgabe5 {
         drawRecursiveSquares(myDrawObj, x1, y0, s1);
         drawRecursiveSquares(myDrawObj, x1, y1, s1);
 
-        myDrawObj.setColor(Color.YELLOW);
-        myDrawObj.fillSquare(x - s1, y - s1, s);
         myDrawObj.setColor(Color.BLACK);
         myDrawObj.drawSquare(x - s1, y - s1, s);
+        myDrawObj.setColor(Color.YELLOW);
+        myDrawObj.fillSquare(x - s1, y - s1, s);
 
+        myDrawObj.show(500);
 
     }
 

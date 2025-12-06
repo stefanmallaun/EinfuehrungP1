@@ -18,15 +18,16 @@ public class Aufgabe4 {
                 result[i] = new int[inputArray[1]];
             }
         }
-        int maxCols = Math.max(inputArray[1], inputArray[2]);
+        //herausfinden, was die maximale Anzahl an Spalten sein muss.
+        int maxSpalten = Math.max(inputArray[1], inputArray[2]);
 
         //spalten zuerst durchgehen
-        for (int col = 0; col < maxCols; col++) {
+        for (int spalten = 0; spalten < maxSpalten; spalten++) {
             //dann die reihe
-            for (int row = 0; row < inputArray[0]; row++) {
+            for (int reihen = 0; reihen < inputArray[0]; reihen++) {
                 //schauen, ob reihe noch elemente hat
-                if (col < result[row].length) {
-                    result[row][col] = counter;
+                if (spalten < result[reihen].length) {
+                    result[reihen][spalten] = counter;
                     counter++;
                 }
             }

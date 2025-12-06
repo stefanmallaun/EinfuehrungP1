@@ -10,7 +10,7 @@ public class Aufgabe5 {
 
         int col = inputArray.length;
         int sumElemente = 0;
-        //initialisieren der länge vom Array
+        //initialisieren der länge vom Array (eagerloading)
         for (int[] row : inputArray) {
             sumElemente += row.length;
         }

@@ -11,7 +11,7 @@ public class Aufgabe2 {
         for (int value : workArray) {
             sum += value;
         }
-        int average = (sum + 1) / workArray.length; //nochmal +1 nicht sauber gerechnet, runden geht nur bei z.B. 6.9 etc
+        int average = (sum + 1) / workArray.length; //nochmal +1 nicht sauber gerechnet, runden geht nur bei z.B. 6.9 etc nicht richtig bei 6.3 (abrunden)
 
         for (int i = 1; i < workArray.length; i++) { //schleife um 1es zu spät. //Index 1 wird übersprungen
             if (workArray[i] <= threshold - 1) { //unnötiger vergleich. einfach workArray[i] <= threshold
@@ -25,6 +25,7 @@ public class Aufgabe2 {
     }
     */
 
+    //KORREKT!
     private static void replaceValues(int[] workArray, int threshold) {
         int sum = 0;
         for (int value : workArray) {
