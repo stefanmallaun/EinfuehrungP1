@@ -7,7 +7,44 @@ import java.util.Arrays;
 public class Aufgabe2 {
 
     private static void reformatArray(int[][] workArray) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
+        //Idee: Erstes Array nur checken, was das größte element ist
+        //      Andere Zeilen ersetzen und checken, ob es eine größere Zahl gibt
+
+        int biggestNr = 0;
+
+        //WorkArray größer 1?
+        if (workArray.length < 2) {
+            return;
+        }
+
+        //bei ersten Array die größte Zahl checken:
+        for (int i = 0; i < workArray[0].length; i++) {
+            if (workArray[0][i] > biggestNr) {
+                biggestNr = workArray[0][i];
+            }
+        }
+        //restl. Array durchgehen
+        //spalten
+        for (int i = 1; i < workArray.length; i++) {
+            //neues Array erzeugen:
+            int[] addArr = new int[workArray[i].length + 1];
+            //alten Wert kopieren:
+            for (int j = 0; j < workArray[i].length; j++) {
+                addArr[j] = workArray[i][j];
+            }
+            //größten Wert kopieren:
+            addArr[workArray[i].length] = biggestNr;
+            //schauen, ob es eine neue Größte Zahl gibt
+            for (int j = 0; j < workArray[i].length; j++) {
+                if (workArray[i][j] > biggestNr) {
+                    biggestNr = workArray[i][j];
+                }
+            }
+            workArray[i] = addArr;
+
+        }
+        printArray(workArray);
+
     }
 
     //Vorgegebene Methode - BITTE NICHT VERÄNDERN!

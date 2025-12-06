@@ -4,13 +4,83 @@
 public class Aufgabe3 {
 
     private static double[][] genCircleFilter(int n, double radius) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        return null; //Zeile kann geändert oder entfernt werden.
+        //  Überprüfen, ob n != ungerade & <= 1;
+        if (n % 2 == 0 || n <= 1) {
+            return null;
+        }
+
+        //Array generieren
+        double[][] filtered = new double[n][n];
+        int center = n / 2;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                //calc:
+                double distance = Math.sqrt(Math.pow(i - center, 2) + Math.pow(j - center, 2));
+                if (distance < radius) {
+                    filtered[i][j] = 1.00;
+                } else {
+                    filtered[i][j] = 0.00;
+                }
+            }
+        }
+        return filtered;
+
     }
 
+    /*
+    Bei der Kreuzkorrelation wird das Filter Arr mit seinem Mittelpunkt
+    auf jedes gültige Feld des workArray gelegt;
+    die überlagerten Werte von workArray und filterArray werden paarweise
+    multipliziert und aufsummiert – diese Summe ist der Ergebniswert an dieser Position
+     */
+
     private static double[][] applyFilter(double[][] workArray, double[][] filterArray) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        return null; //Zeile kann geändert oder entfernt werden.
+        //neues Array mit länge workArray
+        double[][] result = new double[workArray.length][workArray[0].length];
+
+
+        //Mitte von filteredArray
+        int filterArrayMidY = filterArray.length / 2;
+        int filterArrayMidX = filterArray[0].length / 2;
+
+        //Durchgehen des workArrays
+        for (int i = 0; i < result.length; i++) {
+            for (int j = 0; j < result[0].length; j++) {
+
+                // Prüfen, ob der Filter hineinpasst
+                if (i - filterArrayMidY < 0 || i + filterArrayMidX >= workArray.length ||
+                        j - filterArrayMidX < 0 || j + filterArrayMidX >= workArray[0].length) {
+
+                    result[i][j] = 0;
+                    continue;
+
+                }
+
+                    double sum = 0.0;
+
+                    //Kreuzrelation berechnen
+                    //Durchgehen des filterArray
+                    for (int k = 0; k < filterArray.length; k++) {
+                        for (int l = 0; l < filterArray[0].length; l++) {
+
+                            //Berechnung wie auf AB blatt.  0*1 + 1*0 + 2*0 +
+                            //                              4*1 + 5*2 + 6*0 +
+                            //                              8*0 + 9*0 + 10*3
+                            int wertY = i + k - filterArrayMidY;
+                            int wertX = j + l - filterArrayMidX;
+
+                            sum += workArray[wertY][wertX] * filterArray[k][l];
+
+                        }
+
+                    }
+                    result[i][j] = sum;
+                }
+
+
+        }
+        return result;
+
     }
 
     private static void print(double[][] workArray) {
@@ -64,5 +134,11 @@ public class Aufgabe3 {
         System.out.println("Output -> myArray4:");
         print(myArray4);
         //TODO: Erstellen Sie den Filter aus dem Aufgabenblatt, wenden Sie ihn auf myArray4 an und geben Sie das Ergebnis mittels print() aus
+        double[][] myFilter4 = {{0, 0, 0}, {0, 0, 0}, {0, 0.5, 0}};
+        System.out.println("Output -> myFilter4:");
+        print(myFilter4);
+        myResultArray = applyFilter(myArray4, myFilter4);
+        System.out.println("Output -> myFilter4 applied to myArray4:");
+        print(myResultArray);
     }
 }

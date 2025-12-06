@@ -7,7 +7,7 @@ import java.util.Arrays;
 public class Aufgabe1 {
 
     private static void changeRows(int[][] workArray) {
-        //Check ob alle gleichlang sind
+        //Check ob alle gleich lang sind
         if (workArray[0].length == workArray[1].length &&
                 workArray[1].length == workArray[2].length) {
             return;
@@ -16,6 +16,7 @@ public class Aufgabe1 {
 
         int saveIndexLongest = 0;
         int saveIndexShortest = 0;
+        //schauen, wo das längste und das kürzeste Arr liegt
         for (int i = 1; i < 3; i++) {
             if (workArray[i].length < workArray[saveIndexShortest].length) {
                 saveIndexShortest = i;
@@ -25,18 +26,20 @@ public class Aufgabe1 {
             }
         }
 
+        //falls alle Arr gleich lang sind
         if (saveIndexLongest == saveIndexShortest) {
             return;
         }
 
-
+        //Längste und kürzeste Vertauschen
         int[] shortest = workArray[saveIndexShortest];
         int[] longest = workArray[saveIndexLongest];
         workArray[0] = shortest;
         workArray[2] = longest;
+
+        //Neues Array erzeugen
         int[] addArray = new int[shortest.length + longest.length];
         int h = 0;
-
         for (int i = 0; i < shortest.length; i++) {
             addArray[h++] = shortest[i];
         }
