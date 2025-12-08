@@ -43,8 +43,53 @@ public class Aufgabe4 {
     }
 
     private static int[][] blackenSimilarRegions(int[][] imgArray, int rowStart, int rowEnd, int colStart, int colEnd, double threshold) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        return null; //Zeile kann geändert oder entfernt werden.
+        int[][] result = new int[imgArray.length][imgArray[0].length];
+        //copy
+        for (int i = 0; i < imgArray.length; i++) {
+            result[i] = imgArray[i].clone();
+        }
+
+        //Template erstellen
+        //Berechnung height und width
+        int templateHeight = rowEnd - rowStart + 1;
+        int templateWidth = colEnd - colStart + 1;
+        int[][] template = new int[templateHeight][templateWidth];
+
+        //Bildbereich extrahieren
+        for (int i = 0; i < templateHeight; i++) {
+            for (int j = 0; j < templateWidth; j++) {
+                template[i][j] = imgArray[rowStart + i][colStart + j];
+            }
+        }
+        //Über das Hauptbild iterieren und schauen, ob die Ähnlichkeit größer threshold ist
+        //zuerst schauen, dass man im Bild bleibt und das template nicht darüber hinaus iteriert
+        for (int i = 0; i < imgArray.length - templateHeight; i++) {
+            for (int j = 0; j < imgArray[0].length - templateWidth; j++) {
+
+                double ssd = 0;
+
+                //iterieren durch das Template:
+                for (int k = 0; k < templateHeight; k++) {
+                    for (int l = 0; l < templateWidth; l++) {
+                        //differenz ausrechnen:
+                        ssd += Math.pow(imgArray[i + k][j + l] - template[k][l], 2);
+                    }
+                }
+
+                //Checken ob Ähnlichkeit groß genug ist
+                if (ssd < threshold) {
+                    //Wieder durchiterien
+                    for (int k = 0; k < templateHeight; k++) {
+                        for (int l = 0; l < templateWidth; l++) {
+                            result[k + i][j + l] = 0;
+                        }
+                    }
+                }
+
+
+            }
+        }
+        return result;
     }
 
 
@@ -62,13 +107,13 @@ public class Aufgabe4 {
         int[][] imgArray = convertImg2Array(img);
 
         //blacken the "g"
-        int[][] resultImg = blackenSimilarRegions(imgArray, 148, 158, 321, 328, 1e5);
+        //int[][] resultImg = blackenSimilarRegions(imgArray, 148, 158, 321, 328, 1e5);
 
         //blacken the "while"
         //int[][] resultImg = blackenSimilarRegions(imgArray, 214, 230, 233, 270, 1e6);
 
         //binarize by comparing to a single black pixel region
-        //int[][] resultImg = blackenSimilarRegions(imgArray, 150, 150, 95, 95, 220 * 220);
+        int[][] resultImg = blackenSimilarRegions(imgArray, 150, 150, 95, 95, 220 * 220);
 
         drawImage(imgArray);
         if (resultImg != null) {
