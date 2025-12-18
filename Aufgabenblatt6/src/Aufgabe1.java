@@ -237,7 +237,108 @@ public class Aufgabe1 {
     }
 
     private static void simulateMovements(Piece piece, int rank, int file, int[][] board) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
+        // file = spalten, rank = reihen
+        switch (piece) {
+
+            case KNIGHT:
+                // Knight bewegt sich in L form und hat 8 verschiedene positionen
+                for (int i = 0; i < 8; i++) {
+                    // oben, rechts, unten, links
+                    int[] dx = {-1, 1, 2, 2, -1, 1, -2, -2};
+                    int[] dy = {2, 2, 1, -1, -2, -2, -1, -1};
+
+                    //Prüfen ob es im Brett ist
+                    if (rank + dx[i] >= 0 && file + dy[i] < board.length && rank + dx[i] < board.length && file + dy[i] >= 0) {
+                        board[rank + dx[i]][file + dy[i]] += 1;
+                    }
+                }
+                break;
+
+            case ROOK:
+                // Rook bewegt sich in NUR geraden Linien
+                for (int i = 0; i < board.length; i++) {
+                    //Spalten
+                    board[file][i] += 1;
+
+                    //Reihen
+                    board[i][rank] += 1;
+                }
+                break;
+
+            case KING:
+                for (int i = -1; i < 2; i++) {
+                    if(file + i >= 0 && rank + i < board.length) {
+                        board[file][i] += 1;
+                    }if(rank + i >= 0 && file + i < board.length) {
+                        board[i][rank] += 1;
+                    }
+                }
+                break;
+
+            case BISHOP:
+                // file = spalten, rank = reihen
+                //Zuerst reihen nach OBEN durchgehen
+                for(int i = rank; i >= 0; i--){
+                    //Spalten nach rechts durchgehen
+                    for(int j = file; j >= 0; j--){
+                        board[i][j] += 1;
+                    }
+                    //Spalten nach links durchgehen
+                    for(int j = file; j < board.length; j++){
+                        board[i][j] += 1;
+                    }
+                }
+                //Zuerst reihen nach UNTEN durchgehen
+                for(int i = rank; i < board.length; i++){
+                    //Spalten nach rechts durchgehen
+                    for(int j = file; j >= 0; j--){
+                        board[i][j] += 1;
+                    }
+                    //Spalten nach links durchgehen
+                    for(int j = file; j < board.length; j++){
+                        board[i][j] += 1;
+                    }
+                }
+                break;
+
+            case QUEEN:
+                // file = spalten, rank = reihen
+                //Zuerst reihen nach OBEN durchgehen
+                for(int i = rank; i >= 0; i--){
+                    //Spalten nach rechts durchgehen
+                    for(int j = file; j >= 0; j--){
+                        board[i][j] += 1;
+                    }
+                    //Spalten nach links durchgehen
+                    for(int j = file; j < board.length; j++){
+                        board[i][j] += 1;
+                    }
+                }
+                //Zuerst reihen nach UNTEN durchgehen
+                for(int i = rank; i < board.length; i++){
+                    //Spalten nach rechts durchgehen
+                    for(int j = file; j >= 0; j--){
+                        board[i][j] += 1;
+                    }
+                    //Spalten nach links durchgehen
+                    for(int j = file; j < board.length; j++){
+                        board[i][j] += 1;
+                    }
+                }
+
+                for (int i = 0; i < board.length; i++) {
+                    //Spalten
+                    board[file][i] += 1;
+
+                    //Reihen
+                    board[i][rank] += 1;
+                }
+                break;
+
+
+
+
+        }
     }
 
     private static void reachPosition(int rank, int file, int[][] board) {
@@ -301,8 +402,7 @@ public class Aufgabe1 {
                     info = "Congratulations!\nYour Score: " + score;
                 }
                 return !winning;
-            }
-            else{
+            } else {
                 info = "Please place all pieces before submitting.";
             }
         }
