@@ -18,7 +18,7 @@ public class Aufgabe1 {
     private static final int OFFSET = CANVAS_HEIGHT / 100;
     private static final int CANVAS_WIDTH = CANVAS_HEIGHT - OFFSET;
 
-    private static int score = 100; // We start with 100 points - each hint deducts 3, each wrong guess 7 points
+    private static int score = 1000; // We start with 100 points - each hint deducts 3, each wrong guess 7 points
     private static String info = "Good Luck!";
     private static Piece selectedPiece = Piece.NONE; // The currently selected piece
 
@@ -153,11 +153,22 @@ public class Aufgabe1 {
         game.setColor(Palette.BLACK);
         game.drawRectangle(BOARD_SIZE + 2 * OFFSET, OFFSET + SQUARE_SIZE, 2 * SQUARE_SIZE, 7 * SQUARE_SIZE);
         int[] notPlaced = {-1, -1};
+        /*
         for (int i = 1; i < attempt.length; i++) {
             if (Arrays.equals(attempt[i], notPlaced)) {
                 game.drawImage(BOARD_SIZE + 2 * OFFSET, OFFSET + i * SQUARE_SIZE, images[i]);
             } else {
                 game.drawImage(attempt[i][1] * SQUARE_SIZE + OFFSET, attempt[i][0] * SQUARE_SIZE + OFFSET, images[i]);
+            }
+        }
+         */
+        for (int i = 1; i < placements.length; i++) {
+            int rank = placements[i][0];
+            int file = placements[i][1];
+
+            if (rank != -1 && file != -1) {
+                // platziere direkt die Figur auf dem Board
+                game.drawImage(file * SQUARE_SIZE + OFFSET, rank * SQUARE_SIZE + OFFSET, images[i]);
             }
         }
         for (int i = 1; i < placements.length; i++) {
@@ -241,105 +252,97 @@ public class Aufgabe1 {
         switch (piece) {
 
             case KNIGHT:
-                // Knight bewegt sich in L form und hat 8 verschiedene positionen
-                for (int i = 0; i < 8; i++) {
-                    // oben, rechts, unten, links
-                    int[] dx = {-1, 1, 2, 2, -1, 1, -2, -2};
-                    int[] dy = {2, 2, 1, -1, -2, -2, -1, -1};
-
-                    //Prüfen ob es im Brett ist
-                    if (rank + dx[i] >= 0 && file + dy[i] < board.length && rank + dx[i] < board.length && file + dy[i] >= 0) {
-                        board[rank + dx[i]][file + dy[i]] += 1;
-                    }
-                }
+                moveKnight(rank, file, board);
                 break;
 
             case ROOK:
-                // Rook bewegt sich in NUR geraden Linien
-                for (int i = 0; i < board.length; i++) {
-                    //Spalten
-                    board[file][i] += 1;
-
-                    //Reihen
-                    board[i][rank] += 1;
-                }
+                moveRook(rank, file, board);
                 break;
 
             case KING:
-                for (int i = -1; i < 2; i++) {
-                    if(file + i >= 0 && rank + i < board.length) {
-                        board[file][i] += 1;
-                    }if(rank + i >= 0 && file + i < board.length) {
-                        board[i][rank] += 1;
-                    }
-                }
+                moveKing(rank, file, board);
                 break;
 
             case BISHOP:
-                // file = spalten, rank = reihen
-                //Zuerst reihen nach OBEN durchgehen
-                for(int i = rank; i >= 0; i--){
-                    //Spalten nach rechts durchgehen
-                    for(int j = file; j >= 0; j--){
-                        board[i][j] += 1;
-                    }
-                    //Spalten nach links durchgehen
-                    for(int j = file; j < board.length; j++){
-                        board[i][j] += 1;
-                    }
-                }
-                //Zuerst reihen nach UNTEN durchgehen
-                for(int i = rank; i < board.length; i++){
-                    //Spalten nach rechts durchgehen
-                    for(int j = file; j >= 0; j--){
-                        board[i][j] += 1;
-                    }
-                    //Spalten nach links durchgehen
-                    for(int j = file; j < board.length; j++){
-                        board[i][j] += 1;
-                    }
-                }
+                moveBishop(rank, file, board);
                 break;
 
             case QUEEN:
-                // file = spalten, rank = reihen
-                //Zuerst reihen nach OBEN durchgehen
-                for(int i = rank; i >= 0; i--){
-                    //Spalten nach rechts durchgehen
-                    for(int j = file; j >= 0; j--){
-                        board[i][j] += 1;
-                    }
-                    //Spalten nach links durchgehen
-                    for(int j = file; j < board.length; j++){
-                        board[i][j] += 1;
-                    }
-                }
-                //Zuerst reihen nach UNTEN durchgehen
-                for(int i = rank; i < board.length; i++){
-                    //Spalten nach rechts durchgehen
-                    for(int j = file; j >= 0; j--){
-                        board[i][j] += 1;
-                    }
-                    //Spalten nach links durchgehen
-                    for(int j = file; j < board.length; j++){
-                        board[i][j] += 1;
-                    }
-                }
-
-                for (int i = 0; i < board.length; i++) {
-                    //Spalten
-                    board[file][i] += 1;
-
-                    //Reihen
-                    board[i][rank] += 1;
-                }
+                //Methode von Rook und Bishop zusammen
+                moveRook(rank, file, board);
+                moveBishop(rank, file, board);
                 break;
-
-
+            default:
+                break;
 
 
         }
     }
+
+    private static void moveKnight(int rank, int file, int[][] board) {
+        // Knight bewegt sich in L form und hat 8 verschiedene positionen
+        for (int i = 0; i < 8; i++) {
+            // oben, rechts, unten, links
+            int[] dx = {-1, 1, 2, 2, -1, 1, -2, -2};
+            int[] dy = {2, 2, 1, -1, -2, -2, -1, 1};
+
+            //Prüfen ob es im Brett ist
+            if (rank + dx[i] >= 0 && file + dy[i] < board.length && rank + dx[i] < board.length && file + dy[i] >= 0) {
+                board[rank + dx[i]][file + dy[i]] += 1;
+            }
+        }
+    }
+
+    private static void moveRook(int rank, int file, int[][] board) {
+        // Spalte
+        for (int r = 0; r < board.length; r++) {
+            if (r != rank) board[r][file] += 1;
+        }
+        // Reihe
+        for (int f = 0; f < board.length; f++) {
+            if (f != file) board[rank][f] += 1;
+        }
+    }
+    private static void moveKing(int rank, int file, int[][] board){
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                // überspringe das Feld des Kings selbst
+                if (i == 0 && j == 0) continue;
+
+                int newRank = rank + i;
+                int newFile = file + j;
+
+                // prüfen ob innerhalb des Boards
+                if (newRank >= 0 && newRank < board.length && newFile >= 0 && newFile < board.length) {
+                    board[newRank][newFile]++;
+                }
+            }
+        }
+    }
+    private static void moveBishop(int rank, int file, int[][] board){
+        // oben
+        for (int r = rank - 1; r >= 0; r--) {
+            int d = rank - r;
+            if (file - d >= 0){
+                board[r][file - d]++;
+            }
+            if (file + d < board.length){
+                board[r][file + d]++;
+            }
+        }
+
+        // unten
+        for (int r = rank + 1; r < board.length; r++) {
+            int d = r - rank;
+            if (file - d >= 0){
+                board[r][file - d]++;
+            }
+            if (file + d < board.length){
+                board[r][file + d]++;
+            }
+        }
+    }
+
 
     private static void reachPosition(int rank, int file, int[][] board) {
         // TODO: Implementieren Sie hier Ihre Lösung für die Methode
