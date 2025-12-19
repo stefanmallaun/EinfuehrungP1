@@ -153,7 +153,7 @@ public class Aufgabe1 {
         game.setColor(Palette.BLACK);
         game.drawRectangle(BOARD_SIZE + 2 * OFFSET, OFFSET + SQUARE_SIZE, 2 * SQUARE_SIZE, 7 * SQUARE_SIZE);
         int[] notPlaced = {-1, -1};
-        /*
+
         for (int i = 1; i < attempt.length; i++) {
             if (Arrays.equals(attempt[i], notPlaced)) {
                 game.drawImage(BOARD_SIZE + 2 * OFFSET, OFFSET + i * SQUARE_SIZE, images[i]);
@@ -161,7 +161,7 @@ public class Aufgabe1 {
                 game.drawImage(attempt[i][1] * SQUARE_SIZE + OFFSET, attempt[i][0] * SQUARE_SIZE + OFFSET, images[i]);
             }
         }
-         */
+         /*
         for (int i = 1; i < placements.length; i++) {
             int rank = placements[i][0];
             int file = placements[i][1];
@@ -171,6 +171,8 @@ public class Aufgabe1 {
                 game.drawImage(file * SQUARE_SIZE + OFFSET, rank * SQUARE_SIZE + OFFSET, images[i]);
             }
         }
+
+          */
         for (int i = 1; i < placements.length; i++) {
             if (placedPiece(placements[i][0], placements[i][1], attempt) == Piece.NONE) {
                 game.drawImage(placements[i][1] * SQUARE_SIZE + OFFSET, placements[i][0] * SQUARE_SIZE + OFFSET, images[0]);
@@ -279,73 +281,67 @@ public class Aufgabe1 {
         }
     }
 
+    // diese move Methoden wurden ausgelagert, da eine Methode nur eine "Sache" erledigen sollen und
+    //      und da die Methode "simulateMovements" schon die auswahl der gewählten Methoden handlet habe ich die
+    //      Berechnungen ausgelagert
     private static void moveKnight(int rank, int file, int[][] board) {
         // Knight bewegt sich in L form und hat 8 verschiedene positionen
         for (int i = 0; i < 8; i++) {
             // oben, rechts, unten, links
-            int[] dx = {-1, 1, 2, 2, -1, 1, -2, -2};
-            int[] dy = {2, 2, 1, -1, -2, -2, -1, 1};
+            int[] x = {-1, 1, 2, 2, -1, 1, -2, -2};
+            int[] y = {2, 2, 1, -1, -2, -2, -1, 1};
 
-            //Prüfen ob es im Brett ist
-            if (rank + dx[i] >= 0 && file + dy[i] < board.length && rank + dx[i] < board.length && file + dy[i] >= 0) {
-                board[rank + dx[i]][file + dy[i]] += 1;
-            }
+            reachPosition(rank + x[i], file + y[i], board);
         }
     }
 
     private static void moveRook(int rank, int file, int[][] board) {
         // Spalte
-        for (int r = 0; r < board.length; r++) {
-            if (r != rank) board[r][file] += 1;
+        for (int i = 0; i < board.length; i++) {
+            //unten
+            reachPosition(rank + i, file, board);
+            //oben
+            reachPosition(rank - i, file, board);
         }
         // Reihe
-        for (int f = 0; f < board.length; f++) {
-            if (f != file) board[rank][f] += 1;
+        for (int i = 0; i < board.length; i++) {
+            //rechts
+            reachPosition(rank, file + i, board);
+            //links
+            reachPosition(rank, file - i, board);
         }
     }
-    private static void moveKing(int rank, int file, int[][] board){
+
+    private static void moveKing(int rank, int file, int[][] board) {
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                // überspringe das Feld des Kings selbst
-                if (i == 0 && j == 0) continue;
-
-                int newRank = rank + i;
-                int newFile = file + j;
-
-                // prüfen ob innerhalb des Boards
-                if (newRank >= 0 && newRank < board.length && newFile >= 0 && newFile < board.length) {
-                    board[newRank][newFile]++;
+                //das Feld vom King überspringen
+                if (i != 0 || j != 0) {
+                    reachPosition(rank + i, file + j, board);
                 }
             }
         }
     }
-    private static void moveBishop(int rank, int file, int[][] board){
-        // oben
-        for (int r = rank - 1; r >= 0; r--) {
-            int d = rank - r;
-            if (file - d >= 0){
-                board[r][file - d]++;
-            }
-            if (file + d < board.length){
-                board[r][file + d]++;
-            }
-        }
 
-        // unten
-        for (int r = rank + 1; r < board.length; r++) {
-            int d = r - rank;
-            if (file - d >= 0){
-                board[r][file - d]++;
-            }
-            if (file + d < board.length){
-                board[r][file + d]++;
-            }
+    private static void moveBishop(int rank, int file, int[][] board) {
+        for (int i = 1; i < board.length; i++) {
+            //links oben
+            reachPosition(rank - i, file - i, board);
+            //links unten
+            reachPosition(rank - i, file + i, board);
+            //rechts oben
+            reachPosition(rank + i, file - i, board);
+            //rechts unten
+            reachPosition(rank + i, file + i, board);
         }
     }
 
 
     private static void reachPosition(int rank, int file, int[][] board) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
+        // Check: Zeile: oben, unten | Spalte: links, rechts | Feld ist nicht -1 (pos für Figur)
+        if (rank >= 0 && rank < board.length && file >= 0 && file < board.length && board[rank][file] != -1) {
+            board[rank][file]++;
+        }
     }
 
     // executes the changes in the game data / board which should be triggered by the mouse click
@@ -424,8 +420,11 @@ public class Aufgabe1 {
     }
 
     private static boolean isPlacement(int rank, int file, int[][] board) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        return false;
+        if(board[rank][file] == -1){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     // returns the piece currently placed at the specified coordinates
@@ -445,12 +444,21 @@ public class Aufgabe1 {
     }
 
     private static boolean isAttemptComplete(int[][] attempt) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        return false;
+        // jedes der Elemente des Attempts Prüfen, ob es [-1][-1] ist, wenn nicht -> alle Figuren platziert
+        for (int i = 1; i < attempt.length; i++) {
+            if(attempt[i][0] == -1 && attempt[i][1] == -1){
+                return false;
+            }
+        }
+        return true;
     }
 
     private static boolean isAttemptCorrect(int[][] attempt, int[][] placements) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        return false;
+        for (int i = 0; i < attempt.length; i++) {
+            if (!Arrays.equals(attempt[i], placements[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 }
