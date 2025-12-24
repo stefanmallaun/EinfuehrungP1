@@ -18,7 +18,7 @@ public class Aufgabe1 {
     private static final int OFFSET = CANVAS_HEIGHT / 100;
     private static final int CANVAS_WIDTH = CANVAS_HEIGHT - OFFSET;
 
-    private static int score = 1000; // We start with 100 points - each hint deducts 3, each wrong guess 7 points
+    private static int score = 100; // We start with 100 points - each hint deducts 3, each wrong guess 7 points
     private static String info = "Good Luck!";
     private static Piece selectedPiece = Piece.NONE; // The currently selected piece
 
@@ -62,7 +62,7 @@ public class Aufgabe1 {
         // 1: knight, 2: bishop, 3: rook, 4: queen, 5: king
         // in other words: must adhere to the order of the Piece enum!
         // inner arrays represent rank(=row), file(=column) in this order. rank, column [-1, -1] means "not placed"
-        int[][] placements = generatePlacement(board, hints, new Random(5)); // the placement the player has to find
+        int[][] placements = generatePlacement(board, hints, new Random()); // the placement the player has to find
         int[][] attempt = new int[6][2]; // the current placement the player set
         for (int i = 0; i < attempt.length; i++) {
             attempt[i] = new int[]{-1, -1};
@@ -206,8 +206,16 @@ public class Aufgabe1 {
         game.setColor(Palette.BLACK);
         game.drawText(BOARD_SIZE + 3 * OFFSET, BOARD_SIZE + 1.5 * SQUARE_SIZE + 3 * OFFSET, "Give up");
 
+        //Added: Reset Button
+        game.setColor(Palette.LIGHT_GRAY);
+        game.fillRectangle(BOARD_SIZE - OFFSET*20, BOARD_SIZE + 2 * OFFSET,SQUARE_SIZE *2, SQUARE_SIZE);
+        game.setColor(Palette.BLACK);
+        game.drawText(BOARD_SIZE - OFFSET*15, BOARD_SIZE + 2 * OFFSET + 40, "Reset");
+
         // info
         game.drawText(4 * OFFSET, BOARD_SIZE + 0.5 * SQUARE_SIZE + 2 * OFFSET, info);
+
+
 
         game.show();
     }
@@ -245,9 +253,12 @@ public class Aufgabe1 {
     }
 
     // overloading generatePlacement for testing purposes
+    /*
     private static int[][] generatePlacement(int[][] board, boolean[][] hints) {
         return generatePlacement(board, hints, new Random());
     }
+
+     */
 
     private static void simulateMovements(Piece piece, int rank, int file, int[][] board) {
         // file = spalten, rank = reihen
@@ -376,6 +387,13 @@ public class Aufgabe1 {
                 score -= 3;
             }
         }
+        //Reset scan
+        else if (mouseX > BOARD_SIZE - OFFSET * 20 && mouseX < BOARD_SIZE - OFFSET * 20 + 2 * SQUARE_SIZE &&
+                mouseY > BOARD_SIZE + 2 * OFFSET && mouseY < BOARD_SIZE + 2 * OFFSET + SQUARE_SIZE) {
+
+            resetAttempt(attempt);
+        }
+
 
         // clicked sidebar (= unplaced pieces)
         else if (mouseX > BOARD_SIZE + 2 * OFFSET && mouseX < BOARD_SIZE + SQUARE_SIZE + 2 * OFFSET &&
@@ -387,6 +405,8 @@ public class Aufgabe1 {
                 }
             }
         }
+
+
 
         // clicked submit
         else if (mouseX > BOARD_SIZE + 2 * OFFSET && mouseX < BOARD_SIZE + 2 * OFFSET + 2 * SQUARE_SIZE &&
@@ -460,5 +480,15 @@ public class Aufgabe1 {
             }
         }
         return true;
+    }
+
+    //Reset Button Logic:
+    private static void resetAttempt(int[][] attempt) {
+        for (int i = 1; i < attempt.length; i++) {
+            attempt[i][0] = -1;
+            attempt[i][1] = -1;
+        }
+        selectedPiece = Piece.NONE;
+        info = "All pieces reset.";
     }
 }
